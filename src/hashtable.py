@@ -23,6 +23,7 @@ class HashTable:
 
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
+        
         return hash(key)
 
 
@@ -51,7 +52,22 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        if self.count == self.capacity:
+            # TODO: increase size
+            print("ERROR: Array full")
+            return
+
+        if key >= self.count:
+            # TODO: better error handling
+            print("Error: Index exceeded")
+            return
+
+        for i in range(self.count, key, -1):
+            self.storage[i] = self.storage[i - 1]
+
+        self.storage[key] = value
+        self.count += 1
+        
 
 
 
@@ -63,7 +79,22 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        last = None
+        current = self.storage[index]
+        while current and current.key != key:
+            last = current
+            current = current.next
+        # If key isn't found
+        if self.storage[index] is None:
+            print("Key could not be found.")
+        # If key is found
+        else:
+            # Remove the first element in the linked list
+            if last is None:
+                self.storage[index] = current.next
+            else:
+                last.next = current.next
 
 
     def retrieve(self, key):
@@ -74,7 +105,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        index = self._hash_mod(key)
+        current = self.storage[index]
+        while current:
+            if current.key == key:
+                return current.value
+            else:
+                current = current.next
+        return None
 
 
     def resize(self):

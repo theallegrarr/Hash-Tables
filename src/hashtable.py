@@ -54,12 +54,11 @@ class HashTable:
         '''
         if self.count == self.capacity:
             # TODO: increase size
-            print("ERROR: Array full")
-            return
+            self.__resize__()
 
         if key >= self.count:
             # TODO: better error handling
-            print("Error: Index exceeded")
+            print("Error: Specified Index outside current range")
             return
 
         for i in range(self.count, key, -1):
@@ -68,7 +67,18 @@ class HashTable:
         self.storage[key] = value
         self.count += 1
         
+    # resize (private)
+    def __resize__(self):
+        # double the size of the array
+        # set capacity to 2*capacity
+        # create a new storage with the size of the capacity
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
 
+        for e in range(self.count):
+            new_storage[e] = self.storage[e]
+        
+        self.storage = new_storage
 
 
     def remove(self, key):

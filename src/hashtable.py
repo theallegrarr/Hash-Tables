@@ -82,19 +82,6 @@ class HashTable:
                         break
                     else:
                         node = node.next
-        
-    # resize (private)
-    def __resize__(self):
-        # double the size of the array
-        # set capacity to 2*capacity
-        # create a new storage with the size of the capacity
-        self.capacity *= 2
-        new_storage = [None] * self.capacity
-
-        for e in range(self.count):
-            new_storage[e] = self.storage[e]
-        
-        self.storage = new_storage
 
 
     def remove(self, key):
@@ -152,7 +139,6 @@ class HashTable:
         new_ht = HashTable(self.capacity)
         for node in self.storage:
             while node:
-                hm_key = self._hash_mod(node.key)
                 new_ht.insert(node.key, node.value)
                 node = node.next
         self.storage = new_ht.storage

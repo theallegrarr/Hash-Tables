@@ -65,7 +65,7 @@ class HashTable:
         if not head:
             self.storage[hm_key] = new_node
         else:
-            # if first node has same key override value
+            # if first node has same key overwrite value
             if head.key == key:
                 new_node.next = head.next
                 self.storage[hm_key] = new_node
@@ -75,7 +75,7 @@ class HashTable:
                     if not node.next:
                         node.next = new_node
                         break
-                    # if next node key is equal override with new_node
+                    # if next node key is equal overwrite with new_node
                     elif node.next.key == key:
                         new_node.next = node.next.next
                         node.next = new_node

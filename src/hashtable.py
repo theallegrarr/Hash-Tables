@@ -52,20 +52,36 @@ class HashTable:
 
         Fill this in.
         '''
-        if self.count == self.capacity:
-            # TODO: increase size
-            self.__resize__()
-
-        if key >= self.count:
-            # TODO: better error handling
-            print("Error: Specified Index outside current range")
-            return
-
-        for i in range(self.count, key, -1):
-            self.storage[i] = self.storage[i - 1]
-
-        self.storage[key] = value
-        self.count += 1
+        '''
+        Store the value with the given key.
+        Hash collisions should be handled with Linked List Chaining
+        Fill this in.
+        '''
+        new_node = LinkedPair(key, value)
+        hm_key = self._hash_mod(key)
+        head = self.storage[hm_key]
+        node = head
+        # if there is nothing in hash table at that key populate it with new_node
+        if not head:
+            self.storage[hm_key] = new_node
+        else:
+            # if first node has same key override value
+            if head.key == key:
+                new_node.next = head.next
+                self.storage[hm_key] = new_node
+            else:
+                while node:
+                    # if next node is None populate with new_node
+                    if not node.next:
+                        node.next = new_node
+                        break
+                    # if next node key is equal override with new_node
+                    elif node.next.key == key:
+                        new_node.next = node.next.next
+                        node.next = new_node
+                        break
+                    else:
+                        node = node.next
         
     # resize (private)
     def __resize__(self):
@@ -132,7 +148,14 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity = self.capacity * 2
+        new_ht = HashTable(self.capacity)
+        for node in self.storage:
+            while node:
+                hm_key = self._hash_mod(node.key)
+                new_ht.insert(node.key, node.value)
+                node = node.next
+        self.storage = new_ht.storage
 
 
 
